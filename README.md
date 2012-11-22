@@ -1,4 +1,1 @@
-bateru
-======
-
-Code from Bateru.com
+# Code from Bateru.com
