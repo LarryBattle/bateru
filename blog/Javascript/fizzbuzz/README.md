@@ -1,4 +1,4 @@
-Javascript: Calculate standard deviation, variance, and average among an array of numbers.
+FizzBuzz in javascript
 
 Author Larry Battle (http://bateru.com/news)
 Date 11.30.2012
