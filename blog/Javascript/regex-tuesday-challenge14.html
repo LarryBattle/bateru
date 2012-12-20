@@ -1,0 +1,94 @@
+<html>
+<body>
+<h2>Look in the console.</h2>
+<script type="text/javascript">
+/*
+/^(Ir?)|(U?![cru])|(W)|(A[cmtu])|(B[aik])|(C[efms])|(Dy)|(E[rsu])|(F[mr])|(Gd)|(H[fgo])|(L[aru])|(Md)|(N[dop])|(Os)|(P[abmortu])|(R[aen])|(S[bmn])|(T[abehlm])|(Xe)|(Yb)$/
+*/
+// http://callumacrae.github.com/regex-tuesday/challenge16.html
+var a = ["Ac", "Am", "At", "Au", "Ba", "Bi", "Bk", "Ce", "Cf", "Cm", "Cs", "Dy", "Er", "Es", "Eu", "Fm", "Fr", "Gd", "Hf", "Hg", "Ho", "I", "Ir", "La", "Lr", "Lu", "Md", "Nd", "No", "Np", "Os", "Pa", "Pb", "Pm", "Po", "Pr", "Pt", "Pu", "Ra", "Re", "Rn", "Sb", "Sm", "Sn", "Ta", "Tb", "Te", "Th", "Tl", "Tm", "U", "W", "Xe", "Yb"];
+var convertStringsToObjectHash = function(obj, arr, propName){
+  var str;
+	obj = obj || {};
+
+	for(var i = 0, len = arr.length; i < len; i++ ){
+		str = arr[i];
+		if(str[1]){
+			obj[ str[0] ] = obj[ str[0] ] || {};
+			obj[ str[0] ][propName] = obj[ str[0] ][propName] || [];
+			obj[ str[0] ][propName].push(str[1]);
+		}else{
+			if(propName != "bad"){
+				obj[ str[0] ] = obj[ str[0] ] || {};
+				obj[ str[0] ].hasSingle = true;
+			}
+		}
+	}
+	return obj;
+};
+var getREStringForGoodProp = function(arr){
+	var str = "";
+	if(arr && arr.length){
+		if(1 < arr.length ){
+			str += "[" + arr.join("") + "]";
+		}else{
+			str += arr.join("");
+		}
+	}
+	return str;
+};
+var getREStringForBadProp = function(arr){
+	var str = "";
+	if(arr && arr.length){
+		str += "(?![" + arr.join("") + "])";
+	}
+	return str;
+};
+var getRegexpFromObject = function(obj, goodPropName, badPropName){
+	var str = "", isFirst = true;
+	for(var key in obj ){
+		if( obj.hasOwnProperty(key) && obj[key][goodPropName] || obj[key].hasSingle ){
+			if(isFirst){
+				isFirst = false;
+			}else{
+				str += "|";
+			}
+			str += "(";
+			if(obj[key].hasSingle){
+				str += key + "\\b";
+				if(true){
+					str += "|";
+				}
+			}
+			str += key;
+			str += getREStringForBadProp( obj[key][badPropName] );
+			str += getREStringForGoodProp( obj[key][goodPropName] );
+			str += ")";
+		}
+	}
+	return "/^"+ str+ "$/";
+};
+var pack = function(goodNames, badNames){
+	var obj = {},
+		goodPropName = "good",
+		badPropName = "bad";
+		
+	obj = convertStringsToObjectHash(obj, goodNames, goodPropName);
+	obj = convertStringsToObjectHash(obj, badNames, badPropName);
+	console.log( JSON.stringify( obj, null, 2));
+	return getRegexpFromObject(obj, goodPropName, badPropName);
+};
+//http://callumacrae.github.com/regex-tuesday/challenge14.html
+var matches = [
+	"Ag", "Ar", "As", "B", "Be", "Br", "C", "Ca", "Cd", "Cl", "Co", "Cr", "Cu", "F", "Fe", "Ga", "Ge", "H", "He", "In", "K", "Kr", "Li", "Mg", "Mn", "Mo", "N", "Na", "Nb", "Ne", "Ni", "Ni", "O", "P", "Pd", "Rb", "Rh", "Ru", "S", "Sc", "Se", "Si", "Sn", "Sr", "Tc", "Ti", "V", "Y", "Zn", "Zr"
+];
+
+var noMatches = [
+	"A", "Ab", "Ad", "At", "Ba", "Ce", "D", "E", "En", "Fa", "Fu", "Gu", "Ha", "Hu", "I", "Is", "J", "Ka", "Kb", "L", "La", "M", "Ma", "Ob", "Op", "Pa", "Pb", "Pe", "Pg", "Po", "Q", "Qs", "R", "Rs", "Sb", "St", "Ta", "Te", "U", "Ub", "Up", "Vw", "W", "Wv", "X", "Xe", "Xp", "Ya", "Yg", "Z", "Za"
+];
+
+console.log( pack( matches, noMatches) );
+
+</script>
+</body>
+</html>
