@@ -1,5 +1,4 @@
 # Code from Bateru.com
 
-- Javascript
-	- Basic Statistics
-	- FizzBuzz
+Code of the days
+- [Javascript](https://github.com/LarryBattle/bateru/tree/master/blog/Javascript)
