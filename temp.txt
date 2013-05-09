@@ -1,0 +1,28 @@
+Temp file for random scripts and thoughts.
+
+
+Are objects the same.
+
+  // Base off of answer from http://stackoverflow.com/questions/1068834/object-comparison-in-javascript
+
+  Object.equals = function (x, y) {
+		if (x === y){
+			return true;
+		}
+		if (!(x instanceof Object) || !(y instanceof Object) || (x.constructor !== y.constructor)){
+			return false;
+		}
+		for (var p in x) {
+			if (!x.hasOwnProperty(p) || x[p] === y[p]){
+				continue;
+			}
+			if (!y.hasOwnProperty(p) || typeof(x[p]) !== "object" || !Object.equals(x[p], y[p])){
+				return false;
+			}
+		}
+		for (p in y) {
+			if (y.hasOwnProperty(p) && !x.hasOwnProperty(p))
+				return false;
+		}
+		return true;
+	};
